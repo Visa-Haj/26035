@@ -18,6 +18,7 @@ body {
   padding: 10px;
 }
 
+/* کارت اصلی */
 .container {
   width: 100%;
   max-width: 420px;
@@ -30,24 +31,29 @@ body {
   overflow: hidden;
 }
 
-.logo-background {
+/* افکت حرفه‌ای گرادیانی پشت لوگو */
+.logo-effect {
   position: absolute;
-  top: -20px;
+  top: -40px;
   left: 50%;
   transform: translateX(-50%);
-  width: 140px;
-  height: 140px;
-  background: url('logo.png') no-repeat center center;
-  background-size: contain;
-  opacity: 0.15;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(
+    circle,
+    rgba(11, 93, 59, 0.12),
+    rgba(11, 93, 59, 0.05),
+    transparent 70%
+  );
   pointer-events: none;
 }
 
+/* لوگو */
 .logo img {
   width: 120px;
   margin-bottom: 15px;
-  z-index: 2;
   position: relative;
+  z-index: 2;
 }
 
 .title {
@@ -73,11 +79,12 @@ input {
   border: 1px solid #ccc;
   margin-bottom: 15px;
   outline: none;
+  transition: 0.3s;
 }
 
 input:focus {
   border-color: #0b5d3b;
-  box-shadow: 0 0 5px rgba(11,93,59,0.3);
+  box-shadow: 0 0 6px rgba(11,93,59,0.35);
 }
 
 button {
@@ -88,6 +95,7 @@ button {
   cursor: pointer;
   background-color: #0b5d3b;
   color: white;
+  transition: 0.3s;
 }
 
 button:hover {
@@ -117,7 +125,7 @@ button:hover {
 }
 
 .footer {
-  margin-top: 20px;
+  margin-top: 22px;
   font-size: 13px;
   color: #777;
 }
@@ -131,8 +139,11 @@ button:hover {
 <body>
 
 <div class="container">
-  <div class="logo-background"></div>
 
+  <!-- افکت گرادیانی حرفه‌ای -->
+  <div class="logo-effect"></div>
+
+  <!-- لوگو اصلی -->
   <div class="logo">
     <img src="logo.png" alt="لوگوی شرکت گلچین کویر کرمان">
   </div>
@@ -166,6 +177,7 @@ button:hover {
   <div id="error" class="error"></div>
 
   <div class="footer">🌙 التماس دعا</div>
+
 </div>
 
 <script>
