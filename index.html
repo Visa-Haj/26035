@@ -10,91 +10,69 @@ body {
   direction: rtl;
   margin: 0;
   font-family: Tahoma, sans-serif;
-  background: linear-gradient(to bottom, #f4f7f3, #e2eee6);
+  background: linear-gradient(180deg, #f4f7f3, #e2eee6);
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: 10px;
+  padding: 12px;
 }
 
-/* کارت اصلی */
 .container {
   width: 100%;
   max-width: 420px;
   background: #ffffff;
-  padding: 25px 20px 30px;
-  border-radius: 16px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+  padding: 28px 20px 30px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
   text-align: center;
   position: relative;
-  overflow: hidden;
 }
 
-/* افکت حرفه‌ای گرادیانی پشت لوگو */
-.logo-effect {
-  position: absolute;
-  top: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 220px;
-  height: 220px;
-  background: radial-gradient(
-    circle,
-    rgba(11, 93, 59, 0.12),
-    rgba(11, 93, 59, 0.05),
-    transparent 70%
-  );
-  pointer-events: none;
-}
-
-/* لوگو */
 .logo img {
   width: 120px;
   margin-bottom: 15px;
-  position: relative;
-  z-index: 2;
 }
 
 .title {
   font-size: 20px;
   font-weight: bold;
   color: #0b5d3b;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .subtitle {
   font-size: 14px;
   color: #555;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   line-height: 1.7;
 }
 
 input {
-  width: 80%;
+  width: 85%;
   font-size: 16px;
-  padding: 10px;
+  padding: 11px;
   text-align: center;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid #ccc;
-  margin-bottom: 15px;
+  margin-bottom: 18px;
   outline: none;
-  transition: 0.3s;
 }
 
 input:focus {
   border-color: #0b5d3b;
-  box-shadow: 0 0 6px rgba(11,93,59,0.35);
+  box-shadow: 0 0 6px rgba(11,93,59,0.25);
 }
 
 button {
+  width: 85%;
   font-size: 16px;
-  padding: 10px 25px;
-  border-radius: 8px;
+  padding: 12px;
+  border-radius: 10px;
   border: none;
   cursor: pointer;
   background-color: #0b5d3b;
-  color: white;
+  color: #fff;
   transition: 0.3s;
 }
 
@@ -102,26 +80,27 @@ button:hover {
   background-color: #094d31;
 }
 
-.error {
-  color: #b00020;
-  margin-top: 10px;
-  font-size: 14px;
-  display: none;
-}
-
 .download-btn {
   display: none;
-  margin-top: 15px;
-  padding: 12px 20px;
-  background: #0b5d3b;
-  color: white;
-  border-radius: 8px;
+  width: 85%;
+  margin-top: 14px;
+  padding: 12px;
+  background: #1b7f4d;
+  color: #fff;
+  border-radius: 10px;
   text-decoration: none;
   font-size: 16px;
 }
 
 .download-btn:hover {
-  background: #094d31;
+  background: #145f3a;
+}
+
+.error {
+  margin-top: 14px;
+  color: #b00020;
+  font-size: 14px;
+  display: none;
 }
 
 .footer {
@@ -131,7 +110,9 @@ button:hover {
 }
 
 @media (max-width: 480px) {
-  input { width: 90%; }
+  input, button, .download-btn {
+    width: 92%;
+  }
 }
 </style>
 </head>
@@ -140,10 +121,6 @@ button:hover {
 
 <div class="container">
 
-  <!-- افکت گرادیانی حرفه‌ای -->
-  <div class="logo-effect"></div>
-
-  <!-- لوگو اصلی -->
   <div class="logo">
     <img src="logo.png" alt="لوگوی شرکت گلچین کویر کرمان">
   </div>
@@ -160,24 +137,19 @@ button:hover {
   <input
     type="number"
     id="pdfNum"
-    min="1"
-    max="180"
     placeholder="کد زائری"
     onkeypress="if(event.key==='Enter'){openPDF()}"
   >
 
-  <br>
-
   <button onclick="openPDF()">مشاهده ویزا</button>
 
   <a id="downloadBtn" class="download-btn" href="" download>
-    دانلود فایل ویزا
+    📥 دانلود فایل ویزا
   </a>
 
   <div id="error" class="error"></div>
 
   <div class="footer">🌙 التماس دعا</div>
-
 </div>
 
 <script>
@@ -199,9 +171,13 @@ function openPDF() {
     .then(res => {
       if (res.ok) {
         errorDiv.style.display = 'none';
+
+        // نمایش دکمه دانلود
         downloadBtn.href = pdfPath;
-        downloadBtn.style.display = 'inline-block';
-        window.location.href = pdfPath;
+        downloadBtn.style.display = 'block';
+
+        // باز شدن PDF در تب جدید (مناسب اندروید)
+        window.open(pdfPath, '_blank');
       } else {
         errorDiv.textContent = 'ویزایی با این کد یافت نشد';
         errorDiv.style.display = 'block';
