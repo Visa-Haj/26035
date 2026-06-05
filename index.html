@@ -2,106 +2,39 @@
 <html lang="fa">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مشاهده ویزا | کاروان 26035</title>
+<title>پنل مدیر کاروان</title>
 
 <style>
 body {
+  font-family: Tahoma;
   direction: rtl;
-  margin: 0;
-  font-family: Tahoma, sans-serif;
-  background: linear-gradient(180deg, #f4f7f3, #e2eee6);
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
-  padding: 0 12px 24px;
-}
-
-.top-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 6px;
-  background: linear-gradient(90deg, #0b5d3b, #3aa66b);
-}
-
-.container {
-  width: 100%;
-  max-width: 420px;
-  background: #fff;
-  margin-top: 20px;
-  padding: 28px 20px 32px;
-  border-radius: 20px;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+  background: #eef3ef;
   text-align: center;
+  padding: 30px;
 }
 
-.logo img {
-  width: 180px;
-  margin-bottom: 15px;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: bold;
-  color: #0b5d3b;
-  margin-bottom: 10px;
-}
-
-.subtitle {
-  font-size: 13px;
-  color: #555;
-  margin-bottom: 20px;
-  line-height: 1.7;
+.box {
+  background: white;
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
 input {
   width: 90%;
-  font-size: 16px;
-  padding: 12px;
+  padding: 10px;
+  margin: 8px;
   text-align: center;
-  border-radius: 12px;
-  border: 1px solid #ccc;
-  margin-bottom: 12px;
 }
 
 button {
+  padding: 10px;
   width: 90%;
-  font-size: 17px;
-  padding: 13px;
-  border-radius: 12px;
-  border: none;
   background: #0b5d3b;
-  color: #fff;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #094d31;
-}
-
-.download-btn {
-  display: none;
-  width: 90%;
-  margin-top: 15px;
-  padding: 13px;
-  background: #1b7f4d;
-  color: #fff;
-  border-radius: 12px;
-  text-decoration: none;
-}
-
-.error {
-  margin-top: 15px;
-  color: red;
-  display: none;
-}
-
-img {
-  width: 100%;
-  margin-top: 15px;
+  color: white;
+  border: none;
   border-radius: 10px;
 }
 </style>
@@ -109,74 +42,71 @@ img {
 
 <body>
 
-<div class="top-bar"></div>
+<div class="box">
 
-<div class="container">
+<h3>پنل مدیر کاروان</h3>
 
-  <div class="logo">
-    <img src="logo.png">
-  </div>
+<input id="adminPass" placeholder="رمز مدیر">
+<button onclick="login()">ورود</button>
 
-  <div class="title">مشاهده ویزای زائر</div>
+<div id="panel" style="display:none">
 
-  <div class="subtitle">
-    کاروان 26035<br>
-    لطفاً کد ملی و کد زائر را وارد کنید
-  </div>
+  <input id="nat" placeholder="کد ملی">
+  <input id="zay" placeholder="کد زائر">
 
-  <input id="natCode" placeholder="کد ملی">
-  <input id="zayearCode" placeholder="کد زائر">
+  <input type="file" id="passport">
+  <input type="file" id="visa">
 
-  <button onclick="checkUser()">مشاهده ویزا</button>
+  <button onclick="addUser()">ثبت زائر</button>
 
-  <div id="error" class="error"></div>
+  <pre id="output"></pre>
 
-  <a id="downloadBtn" class="download-btn" target="_blank">
-    📥 دانلود ویزا
-  </a>
-
-  <img id="passportImg" style="display:none;">
+</div>
 
 </div>
 
 <script>
+
 let data = {};
 
-fetch('data.json')
-  .then(res => res.json())
-  .then(json => data = json);
+function login() {
+  const pass = document.getElementById("adminPass").value;
 
-function checkUser() {
-  const nat = document.getElementById("natCode").value.trim();
-  const zay = document.getElementById("zayearCode").value.trim();
-
-  const error = document.getElementById("error");
-  const btn = document.getElementById("downloadBtn");
-  const img = document.getElementById("passportImg");
-
-  const user = data[nat];
-
-  if (!user || user.zayear !== zay) {
-    error.innerText = "❌ کد ملی یا کد زائر اشتباه است یا هم‌خوانی ندارد";
-    error.style.display = "block";
-    btn.style.display = "none";
-    img.style.display = "none";
+  if (pass !== "1234") {
+    alert("رمز اشتباه است");
     return;
   }
 
-  error.style.display = "none";
-
-  // نمایش ویزا
-  btn.href = user.visa;
-  btn.style.display = "block";
-
-  // نمایش عکس پاسپورت
-  img.src = user.passport;
-  img.style.display = "block";
-
-  // باز کردن PDF
-  window.open(user.visa, "_blank");
+  document.getElementById("panel").style.display = "block";
 }
+
+function addUser() {
+  const nat = document.getElementById("nat").value;
+  const zay = document.getElementById("zay").value;
+
+  const passportFile = document.getElementById("passport").files[0];
+  const visaFile = document.getElementById("visa").files[0];
+
+  if (!nat || !zay) {
+    alert("اطلاعات ناقص است");
+    return;
+  }
+
+  const passportPath = "files/" + passportFile.name;
+  const visaPath = "files/" + visaFile.name;
+
+  data[nat] = {
+    zayear: zay,
+    passport: passportPath,
+    visa: visaPath
+  };
+
+  document.getElementById("output").innerText =
+    JSON.stringify(data, null, 2);
+
+  alert("ثبت شد ✔ حالا data.json را جایگزین کن");
+}
+
 </script>
 
 </body>
