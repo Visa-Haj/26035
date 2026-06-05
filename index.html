@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مشاهده ویزا | کاروان زیارتی گلچین کویر کرمان 26035</title>
+<title>مشاهده ویزا | کاروان 26035</title>
 
 <style>
 body {
@@ -18,7 +18,6 @@ body {
   padding: 0 12px 24px;
 }
 
-/* نوار خیلی ظریف بالا */
 .top-bar {
   position: fixed;
   top: 0;
@@ -26,14 +25,13 @@ body {
   width: 100%;
   height: 6px;
   background: linear-gradient(90deg, #0b5d3b, #3aa66b);
-  z-index: 10;
 }
 
 .container {
   width: 100%;
   max-width: 420px;
-  background: #ffffff;
-  margin-top: 10px;
+  background: #fff;
+  margin-top: 20px;
   padding: 28px 20px 32px;
   border-radius: 20px;
   box-shadow: 0 12px 32px rgba(0,0,0,0.12);
@@ -41,89 +39,70 @@ body {
 }
 
 .logo img {
-  width: 190px;
-  margin-bottom: 18px;
-  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.22));
-}
-
-@media (max-width: 480px) {
-  .logo img {
-    width: 220px;
-  }
+  width: 180px;
+  margin-bottom: 15px;
 }
 
 .title {
   font-size: 20px;
   font-weight: bold;
   color: #0b5d3b;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .subtitle {
-  font-size: 14px;
+  font-size: 13px;
   color: #555;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
   line-height: 1.7;
 }
 
 input {
-  width: 88%;
+  width: 90%;
   font-size: 16px;
   padding: 12px;
   text-align: center;
   border-radius: 12px;
   border: 1px solid #ccc;
-  margin-bottom: 18px;
-  outline: none;
-}
-
-input:focus {
-  border-color: #0b5d3b;
-  box-shadow: 0 0 8px rgba(11,93,59,0.25);
+  margin-bottom: 12px;
 }
 
 button {
-  width: 88%;
+  width: 90%;
   font-size: 17px;
   padding: 13px;
   border-radius: 12px;
   border: none;
-  cursor: pointer;
-  background-color: #0b5d3b;
+  background: #0b5d3b;
   color: #fff;
+  cursor: pointer;
 }
 
 button:hover {
-  background-color: #094d31;
+  background: #094d31;
 }
 
 .download-btn {
   display: none;
-  width: 88%;
-  margin-top: 16px;
+  width: 90%;
+  margin-top: 15px;
   padding: 13px;
   background: #1b7f4d;
   color: #fff;
   border-radius: 12px;
   text-decoration: none;
-  font-size: 17px;
-}
-
-.download-btn:hover {
-  background: #145f3a;
 }
 
 .error {
-  margin-top: 16px;
-  color: #b00020;
-  font-size: 14px;
+  margin-top: 15px;
+  color: red;
   display: none;
 }
 
-.footer {
-  margin-top: 22px;
-  font-size: 13px;
-  color: #777;
+img {
+  width: 100%;
+  margin-top: 15px;
+  border-radius: 10px;
 }
 </style>
 </head>
@@ -135,70 +114,68 @@ button:hover {
 <div class="container">
 
   <div class="logo">
-    <img src="logo.png" alt="لوگوی شرکت گلچین کویر کرمان">
+    <img src="logo.png">
   </div>
 
   <div class="title">مشاهده ویزای زائر</div>
 
   <div class="subtitle">
-    کاروان زیارتی شرکت <strong>گلچین کویر کرمان</strong><br>
-    شماره کاروان: <strong>26035</strong><br>
-    مدیر کاروان: <strong>محمدرضا گلچین</strong><br>
-    لطفاً کد زائری خود را وارد نمایید
+    کاروان 26035<br>
+    لطفاً کد ملی و کد زائر را وارد کنید
   </div>
 
-  <input
-    type="number"
-    id="pdfNum"
-    placeholder="کد زائری"
-    onkeypress="if(event.key==='Enter'){openPDF()}"
-  >
+  <input id="natCode" placeholder="کد ملی">
+  <input id="zayearCode" placeholder="کد زائر">
 
-  <button onclick="openPDF()">مشاهده ویزا</button>
-
-  <a id="downloadBtn" class="download-btn" href="" download>
-    📥 دانلود فایل ویزا
-  </a>
+  <button onclick="checkUser()">مشاهده ویزا</button>
 
   <div id="error" class="error"></div>
 
-  <div class="footer">🌙 التماس دعا</div>
+  <a id="downloadBtn" class="download-btn" target="_blank">
+    📥 دانلود ویزا
+  </a>
+
+  <img id="passportImg" style="display:none;">
 
 </div>
 
 <script>
-function openPDF() {
-  const pdfNum = document.getElementById('pdfNum').value;
-  const errorDiv = document.getElementById('error');
-  const downloadBtn = document.getElementById('downloadBtn');
+let data = {};
 
-  if (!pdfNum || pdfNum < 1 || pdfNum > 180) {
-    errorDiv.textContent = 'کد زائری نامعتبر است';
-    errorDiv.style.display = 'block';
-    downloadBtn.style.display = 'none';
+fetch('data.json')
+  .then(res => res.json())
+  .then(json => data = json);
+
+function checkUser() {
+  const nat = document.getElementById("natCode").value.trim();
+  const zay = document.getElementById("zayearCode").value.trim();
+
+  const error = document.getElementById("error");
+  const btn = document.getElementById("downloadBtn");
+  const img = document.getElementById("passportImg");
+
+  const user = data[nat];
+
+  if (!user || user.zayear !== zay) {
+    error.innerText = "❌ کد ملی یا کد زائر اشتباه است یا هم‌خوانی ندارد";
+    error.style.display = "block";
+    btn.style.display = "none";
+    img.style.display = "none";
     return;
   }
 
-  const pdfPath = `pdfs/${pdfNum}.pdf`;
+  error.style.display = "none";
 
-  fetch(pdfPath, { method: 'HEAD' })
-    .then(res => {
-      if (res.ok) {
-        errorDiv.style.display = 'none';
-        downloadBtn.href = pdfPath;
-        downloadBtn.style.display = 'block';
-        window.open(pdfPath, '_blank');
-      } else {
-        errorDiv.textContent = 'ویزایی با این کد یافت نشد';
-        errorDiv.style.display = 'block';
-        downloadBtn.style.display = 'none';
-      }
-    })
-    .catch(() => {
-      errorDiv.textContent = 'خطا در دسترسی به فایل';
-      errorDiv.style.display = 'block';
-      downloadBtn.style.display = 'none';
-    });
+  // نمایش ویزا
+  btn.href = user.visa;
+  btn.style.display = "block";
+
+  // نمایش عکس پاسپورت
+  img.src = user.passport;
+  img.style.display = "block";
+
+  // باز کردن PDF
+  window.open(user.visa, "_blank");
 }
 </script>
 
