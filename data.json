@@ -1,5 +1,12 @@
-[
-  { "national_code": "3179578084", "pilgrim_code": "1" },
-  { "national_code": "6079499177", "pilgrim_code": "2" },
-  { "national_code": "2991575425", "pilgrim_code": "3" }
-]
+{
+  "1234567890": {
+    "zayear": "45",
+    "passport": "files/1234567890.jpg",
+    "visa": "files/1234567890.pdf"
+  },
+  "1111111111": {
+    "zayear": "12",
+    "passport": "files/1111111111.jpg",
+    "visa": "files/1111111111.pdf"
+  }
+}
